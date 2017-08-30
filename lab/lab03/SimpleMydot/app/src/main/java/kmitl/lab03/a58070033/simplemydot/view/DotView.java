@@ -8,6 +8,9 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 import kmitl.lab03.a58070033.simplemydot.model.Dot;
 
 
@@ -18,13 +21,18 @@ import kmitl.lab03.a58070033.simplemydot.model.Dot;
 public class DotView extends View {
     private Paint paint;
     private Dot dot;
+    private Random rand = new Random();
+
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if(dot != null) {
-            paint.setColor(Color.RED);
-            canvas.drawCircle(dot.getCenterX(), dot.getCenterY(), dot.getRadius(), paint);
+        if (dot != null) {
+            for (int i = 0; i < dot.cenListX.size(); i++) {
+//                paint.setColor(Color.GREEN);
+                paint.setColor(Color.rgb(dot.redC.get(i), dot.greenC.get(i), dot.blueC.get(i)));
+                canvas.drawCircle(dot.cenListX.get(i), dot.cenListY.get(i), dot.radius.get(i), paint);
+            }
         }
     }
 
