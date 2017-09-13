@@ -135,5 +135,9 @@ public class MainActivity extends AppCompatActivity
         return Uri.parse(imgPath);
     }
 
+    public void undoButton(View view){
+        dots.undoDot();
+    }
+
 
 }

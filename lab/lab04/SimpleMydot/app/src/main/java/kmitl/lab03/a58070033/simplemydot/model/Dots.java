@@ -31,6 +31,11 @@ public class Dots {
         this.listener.onDotsChanged(this);
     }
 
+    public void undoDot(){
+        allDot.remove(allDot.size() - 1);
+        this.listener.onDotsChanged(this);
+    }
+
     public void clearAll() {
         allDot.clear();
         this.listener.onDotsChanged(this);
