@@ -40,8 +40,7 @@ public class MainActivity extends AppCompatActivity
     private DotView dotView;
     private Dots dots;
     final private int REQUEST_CODE_EXTERNAL_STORAGE = 1;
-
-    ScreenCapture capt = new ScreenCapture();
+    
 
 
 
