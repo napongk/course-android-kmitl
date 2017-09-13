@@ -29,5 +29,5 @@ public class ScreenCapture {
     public static Bitmap takescreenshotOfRootView(View view){
         return takescreenshot(view.getRootView());
     }
-
+    
 }
