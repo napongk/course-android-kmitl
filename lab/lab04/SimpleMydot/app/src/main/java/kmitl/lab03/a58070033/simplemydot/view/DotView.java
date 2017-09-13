@@ -6,34 +6,51 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 
-import java.util.ArrayList;
-import java.util.Random;
-
 import kmitl.lab03.a58070033.simplemydot.model.Dot;
-
-
-/**
- * Created by student on 8/25/2017 AD.
- */
+import kmitl.lab03.a58070033.simplemydot.model.Dots;
 
 public class DotView extends View {
-    private Paint paint;
-    private Dot dot;
-    private Random rand = new Random();
 
+    private Paint paint;
+    private Dots allDot;
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if (dot != null) {
-            for (int i = 0; i < dot.cenListX.size(); i++) {
-//                paint.setColor(Color.GREEN);
-                paint.setColor(Color.rgb(dot.redC.get(i), dot.greenC.get(i), dot.blueC.get(i)));
-                canvas.drawCircle(dot.cenListX.get(i), dot.cenListY.get(i), dot.radius.get(i), paint);
+        if(this.allDot != null) {
+            for (Dot dot: allDot.getAllDot()) {
+                paint.setColor(dot.getColor());
+                canvas.drawCircle(
+                        dot.getCenterX(),
+                        dot.getCenterY(), 60, paint);
             }
         }
+    }
+
+    public interface OnDotViewPressListener{
+        void onDotViewPressed(int x, int y);
+    }
+
+    private OnDotViewPressListener onDotViewPressListener;
+    public void setOnDotViewPressListener(
+            OnDotViewPressListener onDotViewPressListener) {
+        this.onDotViewPressListener = onDotViewPressListener;
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                this.onDotViewPressListener
+                        .onDotViewPressed(
+                                (int)event.getX(),
+                                (int)event.getY());
+                return true;
+        }
+        return false;
     }
 
     public DotView(Context context) {
@@ -51,7 +68,8 @@ public class DotView extends View {
         paint = new Paint();
     }
 
-    public void setDot(Dot dot) {
-        this.dot = dot;
+
+    public void setDots(Dots dots) {
+        this.allDot = dots;
     }
 }
