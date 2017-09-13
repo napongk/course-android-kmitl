@@ -30,25 +30,6 @@ public class ScreenCapture {
         return takescreenshot(view.getRootView());
     }
 
-    public static Uri saveBitmap(Bitmap bitmap) {
-        File imagePath = new File(Environment.getExternalStorageDirectory() + "/screenshot.png"); //path to sd card
-        FileOutputStream fos;
-        Uri uriImage = Uri.fromFile(imagePath);
-
-        try {
-            fos = new FileOutputStream(imagePath);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-            fos.flush();
-            fos.close();
-
-        } catch (FileNotFoundException e) {
-            Log.e("GREC", e.getMessage(), e);
-        } catch (IOException e) {
-            Log.e("GREC", e.getMessage(), e);
-        }
-        return uriImage;
-    }
-
 
 
 }

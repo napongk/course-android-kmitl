@@ -93,12 +93,9 @@ public class MainActivity extends AppCompatActivity
     private boolean askforPermission(String permission, int requestCode){
         if (ContextCompat.checkSelfPermission(this,permission)!=PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(this,new String[]{permission}, requestCode);
-            Toast.makeText(this.getApplicationContext(), "Permission Granted please press button again", Toast.LENGTH_SHORT);
             return false;
         }
-        else {
-            return true;
-        }
+        return true;
     }
 
     public void onShare (View view){
@@ -122,10 +119,10 @@ public class MainActivity extends AppCompatActivity
         switch (requestCode){
             case REQUEST_CODE_EXTERNAL_STORAGE:
                 if (grantResults.length>0&&grantResults[0]==PackageManager.PERMISSION_GRANTED){
-                    Toast.makeText(this, "Storage Permission Granted", Toast.LENGTH_SHORT);
+                    Toast.makeText(this, "Permission Granted, please press button again", Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    Toast.makeText(this, "Denied", Toast.LENGTH_SHORT);
+                    Toast.makeText(this, "Denied", Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
