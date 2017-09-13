@@ -31,7 +31,7 @@ public class ScreenCapture {
     }
 
     public static Uri saveBitmap(Bitmap bitmap) {
-        File imagePath = new File(Environment.getExternalStorageDirectory() + "/screenshot.jpg"); //path to sd card
+        File imagePath = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/screenshot.jpg"); //path to sd card
 
         FileOutputStream fos;
         Uri uriImage = Uri.fromFile(imagePath);
