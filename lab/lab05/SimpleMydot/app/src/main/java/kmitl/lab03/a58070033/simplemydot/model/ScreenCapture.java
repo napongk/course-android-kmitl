@@ -18,7 +18,7 @@ import java.io.IOException;
 public class ScreenCapture {
 
 
-    public static Bitmap takescreenshot(View v){
+    public static Bitmap takescreenshot(View v) {
         v.setDrawingCacheEnabled(true);
         v.buildDrawingCache(true);
         Bitmap b = Bitmap.createBitmap(v.getDrawingCache());
@@ -26,8 +26,8 @@ public class ScreenCapture {
         return b;
     }
 
-    public static Bitmap takescreenshotOfRootView(View view){
+    public static Bitmap takescreenshotOfRootView(View view) {
         return takescreenshot(view.getRootView());
     }
-    
+
 }

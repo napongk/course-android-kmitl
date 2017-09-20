@@ -1,8 +1,10 @@
 package kmitl.lab03.a58070033.simplemydot.model;
 
 import android.graphics.Color;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class Dot {
+public class Dot implements Parcelable {
     private int centerX;
     private int centerY;
     private int radius;
@@ -18,6 +20,25 @@ public class Dot {
         this.radius = radius;
         this.color = color;
     }
+
+    protected Dot(Parcel in) {
+        centerX = in.readInt();
+        centerY = in.readInt();
+        radius = in.readInt();
+        color = in.readInt();
+    }
+
+    public static final Creator<Dot> CREATOR = new Creator<Dot>() {
+        @Override
+        public Dot createFromParcel(Parcel in) {
+            return new Dot(in);
+        }
+
+        @Override
+        public Dot[] newArray(int size) {
+            return new Dot[size];
+        }
+    };
 
     public int getColor() {
         return color;
@@ -49,5 +70,18 @@ public class Dot {
 
     public void setRadius(int radius) {
         this.radius = radius;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(centerX);
+        dest.writeInt(centerY);
+        dest.writeInt(radius);
+        dest.writeInt(color);
     }
 }

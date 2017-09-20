@@ -14,16 +14,17 @@ public class Colors {
     private List<Integer> colorList = new ArrayList<>();
 
     public Colors() {
-        for(int i = 0; i <10 ; i += 1){
+        for (int i = 0; i < 10; i += 1) {
             addColor();
         }
     }
+
     public int getColor() {
         return colorList.get(
                 new Random().nextInt(colorList.size()));
     }
 
     public void addColor() {
-        colorList.add(Color.rgb(rand.nextInt(256),rand.nextInt(256),rand.nextInt(256)));
+        colorList.add(Color.rgb(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)));
     }
 }
