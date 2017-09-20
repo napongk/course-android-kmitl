@@ -84,7 +84,7 @@ public class EditDotFragment extends Fragment implements View.OnClickListener {
         xValue.setText(String.valueOf(editXandY(dotPosition, dots, "X")));
         yValue.setText(String.valueOf(editXandY(dotPosition, dots, "Y")));
 
-        preview.setBackgroundColor(Color.RED);
+        preview.setBackgroundColor(dots.getAllDot().get(dotPosition).getColor());
 
         return rootView;
     }
@@ -114,6 +114,7 @@ public class EditDotFragment extends Fragment implements View.OnClickListener {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 progress_value = progress;
                 colorValue.setText(String.valueOf(seekColor.getProgress()));
+                preview.setBackgroundColor(Color.rgb(seekRed.getProgress(), seekGreen.getProgress(), seekBlue.getProgress()));
             }
 
             @Override
