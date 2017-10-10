@@ -1,5 +1,7 @@
 package lab07.a58070033.kmitl;
 
+import java.util.List;
+
 /**
  * Created by student on 10/6/2017 AD.
  */
@@ -13,6 +15,7 @@ public class UserProfile {
     private int post;
     private String urlProfile;
     private String user;
+    private List<PostModel> posts;
     //Setter & Getter
 
     public String getBio() {
@@ -70,4 +73,14 @@ public class UserProfile {
     public void setUser(String user) {
         this.user = user;
     }
+
+    public List getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List posts) {
+        this.posts = posts;
+    }
+
 }
+
