@@ -1,6 +1,8 @@
-package lab07.a58070033.kmitl;
+package lab07.a58070033.kmitl.model;
 
 import java.util.List;
+
+import lab07.a58070033.kmitl.model.PostModel;
 
 /**
  * Created by student on 10/6/2017 AD.

@@ -1,4 +1,4 @@
-package lab07.a58070033.kmitl;
+package lab07.a58070033.kmitl.model;
 
 /**
  * Created by napkkk on 10/10/2560.
