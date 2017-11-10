@@ -2,10 +2,12 @@ package a58070033.kmtil.moneyflow;
 
 import android.arch.persistence.room.Room;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -19,36 +21,37 @@ public class MainActivity extends AppCompatActivity {
     private MoneyFlowDB moneyFlowDB;
     Button addBudget;
     TextView money;
-    private int count;
-    private long amount;
-
+    ListView budgetList;
+    Long incometotal, outcometotal, allmoney;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.showmoneyflow);
 
+        budgetList = findViewById(R.id.budgetList);
         money = findViewById(R.id.mainmoney);
         addBudget = findViewById(R.id.addButton);
         moneyFlowDB = Room.databaseBuilder(this, MoneyFlowDB.class, "MONEYFLOW").build();
 
-        ShowDBTask showdb = new ShowDBTask();
+        final ShowDBTask showdb = new ShowDBTask();
         showdb.execute();
 
-        ShowMoneyTask showMoneyTask = new ShowMoneyTask();
-        showMoneyTask.execute();
+        ShowMoneyTask showmon = new ShowMoneyTask();
+        showmon.execute();
 
-        CheckEmptyTask checkempty = new CheckEmptyTask();
-        checkempty.execute();
-        if(getCount() == 0){
-            Toast.makeText(getApplicationContext(), String.valueOf(getCount()), Toast.LENGTH_SHORT).show();
-            money.setText("0");
-        }
-        else{
 
-            Toast.makeText(getApplicationContext(), String.valueOf(getAmount()), Toast.LENGTH_SHORT).show();
-            money.setText(String.valueOf(getAmount()));
-        }
 
+
+        budgetList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                moneyFlowDB.
+//                moneyFlowDB.getMoneyInfoDAO().deleteOn(i+1);
+//                DeleteTask del = new DeleteTask(i);
+//                del.execute();
+//                Toast.makeText(MainActivity.this, String.valueOf(i), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 
@@ -57,28 +60,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
-    }
-
-
-    public void setAmount(long amount) {
-        this.amount = amount;
-    }
-
-    public long getAmount() {
-        return amount;
-    }
-
     private class ShowDBTask extends AsyncTask<Void, Void, List<MoneyInfo>>{
 
         @Override
         protected List<MoneyInfo> doInBackground(Void... voids) {
-            List<MoneyInfo> result = moneyFlowDB.getMoneyInfoDAO().findMoney();
+            List<MoneyInfo> result = moneyFlowDB.getMoneyInfoDAO().findTransaction();
             result.toString();
             return result;
         }
@@ -87,8 +73,7 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(List<MoneyInfo> moneyInfos) {
             ArrayAdapter<MoneyInfo> adapter = new ArrayAdapter<MoneyInfo>(MainActivity.this, android.R.layout.simple_list_item_1, moneyInfos);
 
-            ListView moneyInfoList = findViewById(R.id.budgetList);
-            moneyInfoList.setAdapter(adapter);
+            budgetList.setAdapter(adapter);
             super.onPostExecute(moneyInfos);
         }
     }
@@ -97,29 +82,48 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected Long doInBackground(Void... voids) {
-            Long result2 = moneyFlowDB.getMoneyInfoDAO().findOnlyMoney();
-
-            return result2;
+            incometotal = moneyFlowDB.getMoneyInfoDAO().checkIncome();
+            outcometotal = moneyFlowDB.getMoneyInfoDAO().checkOutcome();
+            allmoney = incometotal - outcometotal;
+            return allmoney;
         }
 
         @Override
         protected void onPostExecute(Long aLong) {
-            setAmount(aLong);
-            Toast.makeText(getApplicationContext(), aLong.toString(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, "allmoney = " + String.valueOf(allmoney) + " income = " + String.valueOf(incometotal), Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, String.valueOf((double) allmoney / incometotal), Toast.LENGTH_SHORT).show();
+            money.setText(String.valueOf(aLong));
+            if ((double)allmoney / incometotal > 0.5){
+
+                money.setTextColor(Color.parseColor("#68ab4d"));
+            }
+            else if (((double) allmoney / incometotal <= 0.5) && ((double) allmoney / incometotal >= 0.25)){
+                money.setTextColor(Color.parseColor("#f0c330"));
+            }
+            else{
+                money.setTextColor(Color.parseColor("#cc0000"));
+            }
         }
     }
 
-    private class CheckEmptyTask extends AsyncTask<Void, Void, Integer>{
+    private class DeleteTask extends AsyncTask<Void, Void, Integer>{
+        int position;
+
+        public DeleteTask(int i){
+            Toast.makeText(MainActivity.this, String.valueOf(i+1), Toast.LENGTH_SHORT).show();
+            position = i+1;
+        }
 
         @Override
         protected Integer doInBackground(Void... voids) {
-            Integer count = moneyFlowDB.getMoneyInfoDAO().checkEmpty();
-            return count;
+            moneyFlowDB.getMoneyInfoDAO().deleteOn(position);
+            return null;
         }
 
         @Override
         protected void onPostExecute(Integer integer) {
-            setCount(integer);
+
+            super.onPostExecute(integer);
         }
     }
 }

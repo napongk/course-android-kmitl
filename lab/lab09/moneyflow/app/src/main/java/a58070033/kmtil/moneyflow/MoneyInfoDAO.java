@@ -15,18 +15,21 @@ interface MoneyInfoDAO {
     @Query("SELECT * FROM MONEYFLOW_INFO")
     List<MoneyInfo> findTransaction();
 
-    @Query("SELECT * FROM MONEYFLOW_INFO")
-    List<MoneyInfo> findMoney();
-
-    @Query("SELECT Money FROM MONEYFLOW_INFO ORDER BY id DESC limit 1")
-    Long findOnlyMoney();
-
     @Query("SELECT COUNT(*) FROM MONEYFLOW_INFO")
     int checkEmpty();
+
+    @Query("SELECT SUM(Cost) FROM MONEYFLOW_INFO WHERE Type = 'income'")
+    long checkIncome();
+
+    @Query("SELECT SUM(Cost) FROM MONEYFLOW_INFO WHERE Type = 'outcome'")
+    long checkOutcome();
+
+    @Query("DELETE FROM MONEYFLOW_INFO WHERE id = :id")
+    int deleteOn(int id);
 
     @Insert
     void insert(MoneyInfo moneyInfo);
 
     @Delete
-    void delete(MoneyInfo moneyInfo);
+    void deleteItem(MoneyInfo moneyInfo);
 }

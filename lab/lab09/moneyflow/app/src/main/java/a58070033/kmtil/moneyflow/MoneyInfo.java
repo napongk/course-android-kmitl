@@ -4,6 +4,8 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
+import java.text.DecimalFormat;
+
 /**
  * Created by napkkk on 8/11/2560.
  */
@@ -13,9 +15,6 @@ public class MoneyInfo {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
-
-    @ColumnInfo(name = "Money")
-    private long money;
 
     @ColumnInfo(name = "Type")
     private String type;
@@ -58,16 +57,9 @@ public class MoneyInfo {
         this.type = type;
     }
 
-    public long getMoney() {
-        return money;
-    }
-
-    public void setMoney(long money) {
-        this.money = money;
-    }
-
     @Override
     public String toString() {
-        return String.format("%s        %s        %s", type, itemname, cost);
+        DecimalFormat formatter = new DecimalFormat("###,###");
+        return String.format("%1$s%2$20s%3$20s", type, itemname, formatter.format(cost));
     }
 }

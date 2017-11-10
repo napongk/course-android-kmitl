@@ -21,8 +21,6 @@ public class doTransaction extends AppCompatActivity {
     EditText item, cost;
     RadioButton income,outcome;
     private String mode = "income";
-    private int count;
-    private long amount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,33 +35,12 @@ public class doTransaction extends AppCompatActivity {
 
         moneyFlowDB = Room.databaseBuilder(this, MoneyFlowDB.class, "MONEYFLOW").build();
 
-        ShowMoneyTask showMoneyTask = new ShowMoneyTask();
-
-
-
-
     }
 
     public void setSubmitBtn(View view) {
         addTransTask addtrans = new addTransTask();
         addtrans.execute();
         onBackPressed();
-    }
-
-    public long getAmount() {
-        return amount;
-    }
-
-    public void setAmount(long amount) {
-        this.amount = amount;
-    }
-
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
     }
 
 
@@ -76,26 +53,6 @@ public class doTransaction extends AppCompatActivity {
             moneyInfo.setCost(Long.parseLong(cost.getText() + ""));
             moneyInfo.setType(getMode());
 
-            ShowMoneyTask showmoney = new ShowMoneyTask();
-            CheckEmptyTask checkempty = new CheckEmptyTask();
-            checkempty.execute();
-
-            if(getCount() == 0){
-                moneyInfo.setMoney(Long.parseLong(cost.getText() + ""));
-
-            }
-            else{
-                if(getMode().equals("income")){
-                    moneyInfo.setType("+");
-                    moneyInfo.setMoney(Long.parseLong(cost.getText() + "") + getAmount());
-                }
-                else{
-                    moneyInfo.setType("-");
-                    moneyInfo.setMoney(Long.parseLong(cost.getText() + "") - getAmount());
-                }
-            }
-
-
             moneyFlowDB.getMoneyInfoDAO().insert(moneyInfo);
 
 
@@ -104,33 +61,6 @@ public class doTransaction extends AppCompatActivity {
 
     }
 
-    private class ShowMoneyTask extends AsyncTask<Void, Void, Long>{
-
-        @Override
-        protected Long doInBackground(Void... voids) {
-            Long result2 = moneyFlowDB.getMoneyInfoDAO().findOnlyMoney();
-            return result2;
-        }
-
-        @Override
-        protected void onPostExecute(Long aLong) {
-            setAmount(aLong);
-        }
-    }
-
-    private class CheckEmptyTask extends AsyncTask<Void, Void, Integer>{
-
-        @Override
-        protected Integer doInBackground(Void... voids) {
-            Integer count = moneyFlowDB.getMoneyInfoDAO().checkEmpty();
-            return count;
-        }
-
-        @Override
-        protected void onPostExecute(Integer integer) {
-            setCount(integer);
-        }
-    }
 
     public void onRadioButtonClicked(View view) {
         // Is the button now checked?
@@ -168,9 +98,5 @@ public class doTransaction extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
-    }
-
-    public void checkType() {
-
     }
 }
