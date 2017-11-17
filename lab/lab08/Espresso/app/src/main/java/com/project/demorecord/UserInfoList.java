@@ -12,7 +12,7 @@ public class UserInfoList {
     }
 
     public void clearUserInfoList(List<UserInfo> userInfoList){
-        userInfoList.clear();
+        if(!userInfoList.isEmpty()) userInfoList.clear();
     }
 
     private List<UserInfo> userInfoList;
